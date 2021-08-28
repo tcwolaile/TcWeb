@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>write</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        body {
+            background: url(content.jpg);
+            background-size: 100%;
+        }
+        div {
+            text-align: center;
+            margin: auto;
+        }
+        input {
+            margin-top: 50px;
+            height: 40px;
+            width: 200px;
+            background-color: rgba(153, 213, 162, 0);
+            margin-bottom: 40px;
+        }
+        textarea {
+            width: 800px;
+            height: 800px;
+            background-color: rgba(153, 213, 162, 0);
+            resize:none;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <form method="post">
+        <input type="text" name="title"><br>
+        <div class="site"></div>
+        <textarea name="content"></textarea><br>
+        <input type="submit">
+    </form>
+</div>
+
+<script>
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i =0 ;i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+    $("input").eq(1).click(function () {
+        $("form").attr("action", "http://localhost:8080/main/write?number=" + getQueryVariable("number"));
+    })
+</script>
+</body>
+</html>

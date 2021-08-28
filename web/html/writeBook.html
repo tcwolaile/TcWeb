@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>choice_book</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        body {
+            background: url("content.jpg");
+            background-size: 100%;
+        }
+        .content {
+            margin: auto;
+            height: auto;
+            width: 800px;
+        }
+        img {
+            transform: scale(0.5);
+        }
+        .title {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div><a href="http://localhost:8080/main/html/main.html">主页</a><br>
+    <a href="http://localhost:8080/main/html/createNewBook.html">创建一本新小说</a></div>
+    <div class="title"><h1>选择你要写的小说</h1></div>
+    <div class="content"></div>
+    <script>
+        window.onload = function () {
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = 'json';
+            xhr.open('GET', 'http://localhost:8080/main/writeBook');
+            xhr.send();
+            xhr.onreadystatechange = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    const j = xhr.response.length;
+                    console.log(j);
+                    for (var i = 1; i <= j; i++) {
+                        $(".content").append("<a><img src=\"img/" + xhr.response[i + ""] + ".png\"></a>");
+                    }
+                    for (var i = 1; i <= j; i++) {
+                        var a = xhr.response[i + ""];
+                        var b = "http://localhost:8080/main/html/write.html?number=" + a;
+                        $(".content > a").eq(i - 1).attr("href", b);
+                        console.log(b);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

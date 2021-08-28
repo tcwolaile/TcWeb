@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mailboxVerification </title>
+    <style type="text/css">
+        div {
+            width: 600px;
+            margin: auto;
+            padding-top: 200px;
+        }
+        body {
+            background: url("background.jpg");
+            background-size: 100%;
+        }
+        td {
+            width: 200px;
+            border: rgba(255, 255, 255, 0) 30px solid;
+            text-align: center;
+        }
+        input {
+            height: 30px;
+            width: 300px;
+            border-radius: 10px;
+            border: black 1px solid;
+        }
+        input[type=submit] {
+            width: 200px;
+            background: linear-gradient(right, rgba(255, 255, 255 , 0), rgb(182, 237, 232));
+        }
+    </style>
+</head>
+<body>
+<div>
+    <form action="http://localhost:8080/main/mailboxVerification">
+        <table>
+            <tr>
+                <td>邮箱验证码</td>
+                <td><input type="text" name="Validation"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" ></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script src="test.js"></script>
+</body>
+</html>

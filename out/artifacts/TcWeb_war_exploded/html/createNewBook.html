@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>newBook</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style>
+        body {
+            background: url(content.jpg);
+            background-size: 100%;
+        }
+        div {
+            margin: auto;
+            padding: 200px;
+            text-align: center;
+            width: 400px;
+        }
+        td {
+            border:20px solid rgba(0, 0, 0, 0);
+        }
+        input {
+            background-color: rgba(0, 0, 0, 0);
+        }
+        .text {
+            height: 20px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<form enctype = "multipart/form-data"  method="post">
+    <div>
+        <table>
+            <tr>
+                <td>书名</td>
+                <td><input type="text" class="text"></td>
+            </tr>
+            <tr>
+                <td>封面</td>
+                <td><input type="file" name="myFile"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="上传"></td>
+            </tr>
+        </table>
+    </div>
+</form>
+<script>
+    $("input").eq(2).click(function () {
+        $("form").eq(0).attr("action", "http://localhost:8080/main/UploadServlet?bookName=" + $("input").eq(0).val());
+    })
+</script>
+</body>
+</html>

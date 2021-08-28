@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    <style type="text/css">
+        body {
+            background: url("content.jpg");
+            background-size: 100%;
+            overflow-x:hidden;
+        }
+        div{
+            line-height: 40px;
+            word-wrap: break-word;
+            word-break: normal;
+
+        }
+        .content {
+            margin: auto;
+            width: 800px;
+            height: auto;
+            background-color: rgba(0, 0, 0, 0);
+        }
+        .title {
+            padding-top: 50px;
+            padding-bottom: 50px;
+            margin: auto;
+            width: 500px;
+            text-align: center;
+            font-size: 40px;
+            height: auto;
+        }
+        button {
+            height: 40px;
+            width: 80px;
+        }
+        .father {
+            width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+        .main {
+            position: relative;
+            left: 1100px;
+        }
+        .catalogue {
+            float: left;
+            left: 30px;
+            margin-top: 80px;
+            background-color: rgba(153, 213, 162, 0);
+            position: fixed;
+            overflow: hidden;
+        }
+        .head {
+            width: 100%;
+            height: 30px;
+        }
+        .first {
+            text-align: center;
+        }
+        .second {
+            overflow: auto;
+            display: none;
+        }
+        .second::-webkit-scrollbar{
+            display:none;
+        }
+        a:visited {
+            color: #000000
+        }
+        a:active {
+            color: #000000
+        }
+        button {
+            background-color: rgba(153, 213, 162, 0.9);
+        }
+    </style>
+    <title>content</title>
+</head>
+<body>
+    <div class="catalogue">
+        <div class="first"><span>目录</span></div>
+        <div class="second"><ul></ul></div>
+    </div>
+    <div class="main"><a href="http://localhost:8080/main/html/main.html">主页</a></div>
+    <div class="title"></div>
+    <div class="content"></div>
+    <div class="father">
+        <button>上一章</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="next">下一章</button>
+    </div>
+    <script>
+        var mark = 1;
+        var div = document.getElementsByClassName(".content")[0];
+        $(".catalogue").eq(0).mouseenter(function() {
+            $(".second").eq(0).stop().animate({
+                height : 300,
+                width : 100
+            }).css({
+                "display" : "block"
+            })
+        });
+        $(".catalogue").eq(0).stop().mouseleave(function() {
+             $(".second").eq(0).animate({
+                height : 0,
+                width : 0
+            })
+        });
+        window.onload = function() {
+            function getQueryVariable(variable)
+            {
+                var query = window.location.search.substring(1);
+                var vars = query.split("&");
+                for (var i =0 ;i < vars.length; i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] == variable){return pair[1];}
+                }
+                return(false);
+            }
+            const xhr = new XMLHttpRequest();
+            xhr.responseType = 'json';
+            xhr.open('GET', 'http://localhost:8080/main/content?number=' + getQueryVariable("serialNumber"));
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == 4) {
+                    if(xhr.status >= 200 && xhr.status < 300) {
+                        $('.content').append(xhr.response[1 + "_content"].replace(/\n/g,"<br/>"));
+                        $('.title').append(xhr.response["1"]);
+                        var j = xhr.response.chapter;
+                        for(var i = 1; i <= j; i++) {
+                            $('ul').append("<li>" + i + "</li>");
+                            (function (i) {
+                                $('li').eq(i - 1).click(function () {
+                                    $('li').eq(i - 1).css({
+                                        "background-color" : "rgba(23, 255, 64, 0.2)"
+                                    });
+                                    mark = i;
+                                    $(".title").empty().append(xhr.response[i + ""]);
+                                    $(".content").empty().append(xhr.response[i + "_content"]);
+                                }).mouseleave(function () {
+                                    $('li').eq(i - 1).css({
+                                        "background-color" : "rgba(153, 213, 162, 0)"
+                                    })
+                                })
+                            })(i);
+                        }
+                    }
+                }
+            }
+            $("button").eq(0).click(function () {
+                if (mark == 1) {
+                    window.alert("没有上一页了");
+                } else {
+                    mark--;
+                    $(".title").empty().append(xhr.response[mark + ""]);
+                    $(".content").empty().append(xhr.response[mark + "_content"]);
+                }
+            });
+            $("button").eq(1).click(function () {
+                if (mark == xhr.response.chapter) {
+                    window.alert("这是最后一页了");
+                } else {
+                    mark++;
+                    $(".title").empty().append(xhr.response[mark + ""]);
+                    $(".content").empty().append(xhr.response[mark + "_content"]);
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
